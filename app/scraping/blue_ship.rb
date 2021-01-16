@@ -1,83 +1,58 @@
 class BlueShip
-  require 'scraping_nokogiri'
-  require 'build'
-
-  @@article_num_in_page = 18
-
-  attr_reader :lists, :page_id, :is_next_page?, :datas
+  attr_reader :driver, :wait, :url, :data
 
   def initialize
-    @lists = []
-    @page_id = 0
-    @is_next_page = true
+    # seleniumを初期化
+    Selenium::WebDriver.logger.output = File.join("./", "selenium.log")
+    Selenium::WebDriver.logger.level = :warn
+    @driver = Selenium::WebDriver.for :chrome
+    @driver.manage.timeouts.implicit_wait = 3
+    @wait = Selenium::WebDriver::Wait.new(timeout: 6)
+
+    @url = "https://blueshipjapan.com/search/event/catalog?area=0&amp;text_date=&amp;date=1&amp;text_keyword=&amp;cancelled=0&amp;cancelled=1&amp;order=desc"
+    @data = []
   end
+
+  def fetch_data
+    @data = scraping
+  end
+
+  private 
 
   def scraping
-    while (is_next_page?) do
-      @datas = parse_nokogiri_doc
-      build
+    driver.get(url)
+
+    begin
+      scraping_data = []
+
+      while (true)
+        wait.until { driver.find_element(:xpath, "//*[@id='search_result']/div/div/ul/li").displayed? }
+
+        scraping_data += driver.find_elements(:xpath, "//*[@id='search_result']/div/div/ul/li")
+          .map{|element| parse_element(element)}
+
+        next_page_link = driver.find_element(:xpath, "//*[@id='search_result']/div/div/div/span/following-sibling::a")
+        next_page_link.click
+      end
+
+    rescue Selenium::WebDriver::Error::NoSuchElementError
+      # 最後のページまでスクレイピングした時
+      puts "スクレイピング成功"
+    rescue => error
+      p error
     end
+
+    driver.quit
+    return scraping_data
   end
 
-  private
-
-  def build
-    build = Build.new(self)
-    build.save_database
-  end
-
-  def parse_nokogiri_doc
-    @datas = find_lists.map{|list| {
-      organization_name: get_organization_name(list),
-      organization_url: get_organization_url(list),
-      title: get_title(list),
-      job_offer_url: get_job_offer_url(list),
-      event_date: get_event_date(list)
-    }}
-  end
-
-  def list_present?(list)
-    if list.present?
-      @page_id += 1
-      return true
-    else
-      @is_next_page? = false
-      return false
-    end
-  end
-
-  def find_lists
-    doc = set_nokogiri_doc
-    1.upto(@@article_num_in_page) do |i|
-      list = doc.xpath("//div[@class='search_data']//li[#{i}]")
-      list_present?(list) ? lists << list : break
-    end
-    return lists
-  end
-
-  def get_organization_name(list)
-    list.xpath('.//p[@class="crew_name"]').inner_text 
-  end
-
-  def get_organization_url(list)
-    list.xpath('.//div[@class="crew_info"]/a/@href').text  
-  end
-
-  def get_title(list)
-    list.xpath('.//h2[@class="event_title"]/a').inner_text
-  end
-
-  def get_job_offer_url(list)
-    list.xpath('.//h2[@class="event_title"]/a/@href').text
-  end
-
-  def get_event_date(list)
-    list.xpath('.//p[@class="event_date"]/span').inner_text
-  end
-
-  def set_nokogiri_doc
-    url = "https://blueshipjapan.com/search/event/catalog?area=0&text_date=&date=1&text_keyword=&cancelled=0&cancelled=1&order=asc&per_page=#{page_id}"
-    doc = ScrapingNokogiri.new(url: url).nokogiri_doc
-    return doc
+  def parse_element(element)
+    return {
+      organization_name: element.find_element(:xpath, ".//div[2]/a/p").text,
+      organization_url:  element.find_element(:xpath, ".//div[2]/a").attribute('href'),
+      title:             element.find_element(:xpath, ".//div[1]/h2/a").text,
+      job_offer_url:     element.find_element(:xpath, ".//div[1]/h2/a").attribute('href'),
+      event_date:        element.find_element(:xpath, ".//a/p/span").text
+    }
   end
 end
