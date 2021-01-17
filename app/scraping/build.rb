@@ -2,8 +2,8 @@
 class Build
   attr_reader :agent
 
-  def initialize(agent)
-    @agent = agent
+  def initialize(arg)
+    @agent = arg[:agent]
   end
 
   def save_db
