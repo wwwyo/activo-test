@@ -8,7 +8,7 @@ class Build
 
   def save_db
     data_associated_organization = save_organization(fetch_data)
-    save_job_offers(data_associated_organization)
+    save_jobs(data_associated_organization)
   end
 
   private
@@ -27,11 +27,11 @@ class Build
     }
   end
 
-  def save_job_offers(datas)
+  def save_jobs(datas)
     datas.select{ |data| 
-      JobOffer.find_or_create_by(
+      Job.find_or_create_by(
         title:           data[:title],
-        url:             data[:job_offer_url],
+        url:             data[:job_url],
         event_date:      data[:event_date],
         organization_id: data[:organization_id]
       )

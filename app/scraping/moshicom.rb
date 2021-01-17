@@ -58,7 +58,7 @@ class Moshicom
       organization_name: element.find_element(:xpath, ".//div[4]/dl/dd/div[2]/h4/a").text,
       organization_url:  element.find_element(:xpath, ".//div[4]/dl/dd/div[2]/h4/a").attribute('href'),
       title:             element.find_element(:xpath, ".//h3/a").text,
-      job_offer_url:     element.find_element(:xpath, ".//h3/a").attribute('href'),
+      job_url:           element.find_element(:xpath, ".//h3/a").attribute('href'),
       event_date:        element.find_element(:xpath, ".//div[1]/div[1]/time").text
     }
   end

@@ -56,7 +56,7 @@ class BlueShip
       organization_name: element.find_element(:xpath, ".//div[2]/a/p").text,
       organization_url:  element.find_element(:xpath, ".//div[2]/a").attribute('href'),
       title:             element.find_element(:xpath, ".//div[1]/h2/a").text,
-      job_offer_url:     element.find_element(:xpath, ".//div[1]/h2/a").attribute('href'),
+      job_url:           element.find_element(:xpath, ".//div[1]/h2/a").attribute('href'),
       event_date:        element.find_element(:xpath, ".//a/p/span").text
     }
   end

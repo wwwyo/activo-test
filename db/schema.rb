@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_14_082223) do
+ActiveRecord::Schema.define(version: 2021_01_17_094454) do
 
-  create_table "job_offers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "jobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title", null: false
     t.string "url", null: false
     t.date "event_date", null: false
     t.bigint "organization_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["organization_id"], name: "index_job_offers_on_organization_id"
+    t.index ["organization_id"], name: "index_jobs_on_organization_id"
   end
 
   create_table "organizations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -31,5 +31,5 @@ ActiveRecord::Schema.define(version: 2021_01_14_082223) do
     t.index ["name"], name: "index_organizations_on_name"
   end
 
-  add_foreign_key "job_offers", "organizations"
+  add_foreign_key "jobs", "organizations"
 end
