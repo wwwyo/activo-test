@@ -37,7 +37,7 @@ class Moshicom
         next_page_link.click
 
         # 万が一、ページ構成が変わった時の無限ループ回避
-        avoid_loop_20
+        avoid_loop_max_20
       end
 
     rescue Selenium::WebDriver::Error::ElementClickInterceptedError
@@ -63,7 +63,7 @@ class Moshicom
     }
   end
 
-  def avoid_loop_20
+  def avoid_loop_max_20
     @loop_num += 1 
     @is_next_page = false if @loop_num >= 20
   end
