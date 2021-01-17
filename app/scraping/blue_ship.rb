@@ -3,7 +3,7 @@ class BlueShip
 
   def initialize
     # seleniumを初期化
-    Selenium::WebDriver.logger.output = File.join("./", "selenium.log")
+    Selenium::WebDriver.logger.output = File.join("#{Rails.root}/log/", "selenium.log")
     Selenium::WebDriver.logger.level = :warn
     @driver = Selenium::WebDriver.for :chrome
     @driver.manage.timeouts.implicit_wait = 3
