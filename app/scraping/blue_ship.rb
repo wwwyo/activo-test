@@ -3,7 +3,7 @@ class BlueShip
 
   def initialize
     # seleniumを初期化
-    Selenium::WebDriver.logger.output = File.join("./", "selenium.log")
+    Selenium::WebDriver.logger.output = File.join("#{Rails.root}/log/", "selenium.log")
     Selenium::WebDriver.logger.level = :warn
     @driver = Selenium::WebDriver.for :chrome
     @driver.manage.timeouts.implicit_wait = 3
@@ -37,7 +37,7 @@ class BlueShip
         next_page_link.click
 
         # 万が一、ページ構成が変わった時の無限ループ回避
-        avoid_loop_20
+        avoid_loop_max_20
       end
 
     rescue Selenium::WebDriver::Error::NoSuchElementError
@@ -56,12 +56,12 @@ class BlueShip
       organization_name: element.find_element(:xpath, ".//div[2]/a/p").text,
       organization_url:  element.find_element(:xpath, ".//div[2]/a").attribute('href'),
       title:             element.find_element(:xpath, ".//div[1]/h2/a").text,
-      job_offer_url:     element.find_element(:xpath, ".//div[1]/h2/a").attribute('href'),
+      job_url:           element.find_element(:xpath, ".//div[1]/h2/a").attribute('href'),
       event_date:        element.find_element(:xpath, ".//a/p/span").text
     }
   end
 
-  def avoid_loop_20
+  def avoid_loop_max_20
     @loop_num += 1 
     @is_next_page = false if @loop_num >= 20
   end

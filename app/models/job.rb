@@ -1,4 +1,4 @@
-class JobOffer < ApplicationRecord
+class Job < ApplicationRecord
   # association
   belongs_to :organization
 

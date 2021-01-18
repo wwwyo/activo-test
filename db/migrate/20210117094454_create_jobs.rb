@@ -1,6 +1,6 @@
-class CreateJobOffers < ActiveRecord::Migration[6.0]
+class CreateJobs < ActiveRecord::Migration[6.0]
   def change
-    create_table :job_offers do |t|
+    create_table :jobs do |t|
       t.string :title,            null: false
       t.string :url,              null: false, unique: true
       t.date :event_date,         null: false
