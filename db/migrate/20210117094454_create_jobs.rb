@@ -3,7 +3,7 @@ class CreateJobs < ActiveRecord::Migration[6.0]
     create_table :jobs do |t|
       t.string :title,            null: false
       t.string :url,              null: false, unique: true
-      t.date :event_date,         null: false
+      t.string :event_date,       null: false
       t.references :organization, foreign_key: true
       t.timestamps
     end

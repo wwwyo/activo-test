@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 2021_01_17_094454) do
   create_table "jobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title", null: false
     t.string "url", null: false
-    t.date "event_date", null: false
+    t.string "event_date", null: false
     t.bigint "organization_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
