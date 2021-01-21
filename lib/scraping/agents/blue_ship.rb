@@ -1,4 +1,4 @@
-class BlueShip < Scraping
+class BlueShip < DefaultAgent
 
   def default_url
     "https://blueshipjapan.com/search/event/catalog?area=0&amp;text_date=&amp;date=1&amp;text_keyword=&amp;cancelled=0&amp;cancelled=1&amp;order=desc"

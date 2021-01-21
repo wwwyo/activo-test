@@ -1,4 +1,4 @@
-class Scraping
+class DefaultAgent
   # scrapingしたデータの連想配列を返す。
   attr_reader :driver, :wait, :is_next_page, :current_loop_times, :max_loop_times, :url
 
@@ -14,27 +14,6 @@ class Scraping
     @max_loop_times     = args[:max_loop_times] || default_max_loop_times
     @url                = args[:url]            || default_url
     post_initialize(args)
-  end
-
-  def default_wait_time
-    3
-  end
-
-  def default_time_out
-    6
-  end
-  
-  def default_max_loop_times
-    20
-  end
-
-  def post_initialize(args)
-    nil
-  end
-
-  def default_url
-    raise NotImprementedError, 
-    "#{self.class}では、default_urlメソッドを実装してください。"
   end
 
   def execute
@@ -54,6 +33,28 @@ class Scraping
     end
     driver.quit
     return data_hash_lists
+  end
+
+  private
+  def default_wait_time
+    3
+  end
+
+  def default_time_out
+    6
+  end
+  
+  def default_max_loop_times
+    20
+  end
+
+  def post_initialize(args)
+    nil
+  end
+
+  def default_url
+    raise NotImprementedError, 
+    "#{self.class}では、default_urlメソッドを実装してください。"
   end
 
   def scrape

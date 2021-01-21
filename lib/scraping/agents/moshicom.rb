@@ -1,4 +1,4 @@
-class Moshicom < Scraping
+class Moshicom < DefaultAgent
   
   def default_url
     "https://moshicom.com/search/?s=1&keyword=&event_start_date=&event_end_date=&entry_status=yes&except_eventup=no&scale=0&day_entry=no&measurement=no&user_id=0&search_type=0&recommend_event=true&recommend_course=true&recommend_facility=true&mode=1&l=100&o=0&m=1&keywords=&amp%3Bdate_start=&amp%3Bdate_end=&amp%3Bdisciplines%5B%5D=11&amp%3Bscale=0&amp%3Bsort=2&amp%3Bdisp_limit=20&amp%3Bmode=1"
@@ -10,6 +10,7 @@ class Moshicom < Scraping
     return parse_node(documents)
   end
 
+  private
   def parse_node(documents)
     documents.map{|node| optimize_to_hash(node)}
   end
