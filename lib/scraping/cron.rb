@@ -1,5 +1,5 @@
 # モデルに抽出したデータを渡す
-class Factory
+class Cron
   attr_reader :data_hash_lists, :organization, :job
 
   def initialize(args)
@@ -13,6 +13,7 @@ class Factory
     job.iterate_find_or_create(parse_jobs)
   end
 
+  private
   def parse_organizations
     data_hash_lists.map{|list| 
       {
