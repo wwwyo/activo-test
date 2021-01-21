@@ -2,10 +2,10 @@
 class Factory
   attr_reader :data_hash_lists, :organization, :job
 
-  def initialize(arg)
-    @data_hash_lists = arg[:agent].execute
-    organization = Organization.new
-    job = Job.new
+  def initialize(args)
+    @data_hash_lists = args[:agent].execute
+    @organization = Organization.new
+    @job = Job.new
   end
 
   def build
