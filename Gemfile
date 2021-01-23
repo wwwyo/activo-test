@@ -61,3 +61,4 @@ gem 'pry-rails'
 gem 'whenever', require: false
 gem 'selenium-webdriver'
 gem 'react-rails'
+gem 'rake'
